@@ -6,6 +6,7 @@ public class Game {
     private final int _COORDINATES_CNT = 4;
 
     private Cell[][] fstBoard;
+    private Ship[] ships;
 
     public Game() {
         this.fstBoard = new Cell[_FULL_SIZE][];
@@ -15,7 +16,8 @@ public class Game {
                 fstBoard[i][j] = new Cell();
             }
         }
-
+        ships = new Ship[_SHIPS_CNT];
+        initShips();
     }
     public void printBoard() {
         System.out.println("  1 2 3 4 5 6 7 8 9 10");
@@ -26,5 +28,13 @@ public class Game {
             }
             System.out.println();
         }
+    }
+
+    void initShips() {
+        ships[0] = new Ship("Aircraft Carrier", 5);
+        ships[1] = new Ship("Battleship", 4);
+        ships[2] = new Ship("Submarine", 3);
+        ships[3] = new Ship("Cruiser", 3);
+        ships[4] = new Ship("Destroyer", 2);
     }
 }
