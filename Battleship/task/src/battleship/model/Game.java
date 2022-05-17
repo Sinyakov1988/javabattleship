@@ -26,11 +26,18 @@ public class Game {
         sayEnterCoordinate();
     }
     public void printBoard() {
+        _print(false);
+    }
+    public void printFogBoard() {
+        _print(true);
+    }
+    public void _print(boolean withFog) {
         System.out.println("  1 2 3 4 5 6 7 8 9 10");
         for (int i = 0; i < _FULL_SIZE; i++) {
             System.out.print((char) ('A' + i) + " ");
             for (int j = 0; j < _FULL_SIZE; j++) {
-                System.out.print(fstBoard[i][j].getData() + " ");
+                char buffer = fstBoard[i][j].getData();
+                System.out.print(buffer == Symbol.CELL.data && withFog ? Symbol.FOG.data + " " : buffer + " ");
             }
             System.out.println();
         }
@@ -55,10 +62,10 @@ public class Game {
                 + " (" + ships[currentShipIndex].getSize() + " cells)");
     }
     void sayTakeShot(){
-        System.out.println("\nTake a shot!");
+        System.out.println("\nTake a shot!\n");
     }
     void sayStartGame(){
-        System.out.println("\nThe game starts!");
+        System.out.println("\nThe game starts!\n");
     }
     void saveCoordinate(String input) {
      String[] words = input.split(" ");
@@ -151,7 +158,7 @@ public class Game {
                             sayEnterCoordinate();
                         } else {
                             sayStartGame();
-                            printBoard();
+                            printFogBoard();
                             sayTakeShot();
                             status = GameStatus.WAITING_SHOT;
                         }
@@ -186,12 +193,14 @@ public class Game {
         }
         if (fstBoard[aPointX][aPointY].isBoard()) {
             fstBoard[aPointX][aPointY].setData(Symbol.HIT.data);
-            printBoard();
+            printFogBoard();
             System.out.println("\nYou hit a ship!");
+            printBoard();
         } else {
             fstBoard[aPointX][aPointY].setData(Symbol.MISS.data);
-            printBoard();
+            printFogBoard();
             System.out.println("\nYou missed!");
+            printBoard();
         }
     }
 }
