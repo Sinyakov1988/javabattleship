@@ -17,13 +17,11 @@ public class Ship {
         this._NAME = _NAME;
         this._SIZE = _SIZE;
         hits = _SIZE;
-        //this.coordinate = coordinate;
     }
 
     public Ship() {
         this._NAME = "";
         this._SIZE = 0;
-        //this.coordinate = coordinate;
     }
 
     public String getName() {
