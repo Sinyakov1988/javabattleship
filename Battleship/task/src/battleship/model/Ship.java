@@ -27,11 +27,11 @@ public class Ship {
         //this.coordinate = coordinate;
     }
 
-    public String get_NAME() {
+    public String getName() {
         return _NAME;
     }
 
-    public int get_SIZE() {
+    public int getSize() {
         return _SIZE;
     }
 }
