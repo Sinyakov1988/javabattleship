@@ -28,4 +28,8 @@ public class Cell {
     public boolean isCanChange() {
         return canChange;
     }
+
+    public boolean isBoard() {
+        return getData() == Symbol.CELL.data;
+    }
 }

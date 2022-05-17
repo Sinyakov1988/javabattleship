@@ -54,6 +54,12 @@ public class Game {
         System.out.println("\nEnter the coordinates of the " + ships[currentShipIndex].getName()
                 + " (" + ships[currentShipIndex].getSize() + " cells)");
     }
+    void sayTakeShot(){
+        System.out.println("\nTake a shot!");
+    }
+    void sayStartGame(){
+        System.out.println("\nThe game starts!");
+    }
     void saveCoordinate(String input) {
      String[] words = input.split(" ");
      int aPointX = words[0].charAt(0) - 'A';
@@ -144,7 +150,10 @@ public class Game {
                         if (currentShipIndex != _SHIPS_CNT) {
                             sayEnterCoordinate();
                         } else {
-                            status = GameStatus.WAITING_END;
+                            sayStartGame();
+                            printBoard();
+                            sayTakeShot();
+                            status = GameStatus.WAITING_SHOT;
                         }
                     } catch (RuntimeException e) {
                         System.out.println(e.getMessage());
@@ -154,8 +163,35 @@ public class Game {
                     status = GameStatus.WAITING_END;
                 }
                 break;
+            case WAITING_SHOT:
+                try {
+                    processShot(command);
+                    status = GameStatus.WAITING_END;
+                } catch (RuntimeException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
             default:
                 status = GameStatus.WAITING_END;
+        }
+    }
+
+    private void processShot(String command) {
+        int aPointX = command.charAt(0) - 'A';
+        int aPointY = Integer.parseInt(command.substring(1)) - 1;
+
+        if (aPointX < 0 || aPointX >= _FULL_SIZE ||
+                aPointY < 0 || aPointY >= _FULL_SIZE) {
+            throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
+        }
+        if (fstBoard[aPointX][aPointY].isBoard()) {
+            fstBoard[aPointX][aPointY].setData(Symbol.HIT.data);
+            printBoard();
+            System.out.println("\nYou hit a ship!");
+        } else {
+            fstBoard[aPointX][aPointY].setData(Symbol.MISS.data);
+            printBoard();
+            System.out.println("\nYou missed!");
         }
     }
 }
