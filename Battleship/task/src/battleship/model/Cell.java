@@ -4,6 +4,16 @@ public class Cell {
     char data;
     boolean canChange;
 
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    Ship ship;
+
     public void setData(char data) {
         this.data = data;
     }
@@ -30,6 +40,6 @@ public class Cell {
     }
 
     public boolean isBoard() {
-        return getData() == Symbol.CELL.data;
+        return getData() == Symbol.CELL.data || getData() == Symbol.HIT.data;
     }
 }

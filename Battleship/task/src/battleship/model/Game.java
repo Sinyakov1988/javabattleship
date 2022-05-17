@@ -8,6 +8,7 @@ public class Game {
     private final Cell[][] fstBoard;
     private final Ship[] ships;
     private int currentShipIndex;
+    private int fullHits;
     GameStatus status;
 
     public Game() {
@@ -100,6 +101,17 @@ public class Game {
         }
     }
 
+    private boolean isLastShip(){
+        return fullHits == 0;
+    }
+
+    private void takeHit(int x, int y){
+        fstBoard[x][y].getShip().takeHit();
+        if (fstBoard[x][y].getData() == Symbol.CELL.data) {
+            fullHits--;
+        }
+    }
+
     void markUsedCells(int x, int y) {
         fstBoard[x][y].setCanChange(false);
         if (x > 0) {
@@ -128,6 +140,8 @@ public class Game {
         while (size > 0) {
             size--;
             fstBoard[aX][aY].setData(Symbol.CELL.data);
+            fstBoard[aX][aY].setShip(ships[currentShipIndex]);
+            fullHits++;
             markUsedCells(aX, aY);
             if (aX == bX) {
                 if (aY < bY) {
@@ -173,7 +187,9 @@ public class Game {
             case WAITING_SHOT:
                 try {
                     processShot(command);
-                    status = GameStatus.WAITING_END;
+                    if (isLastShip()) {
+                        status = GameStatus.WAITING_END;
+                    }
                 } catch (RuntimeException e) {
                     System.out.println(e.getMessage());
                 }
@@ -192,14 +208,25 @@ public class Game {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
         }
         if (fstBoard[aPointX][aPointY].isBoard()) {
+            takeHit(aPointX, aPointY);
             fstBoard[aPointX][aPointY].setData(Symbol.HIT.data);
             printFogBoard();
-            System.out.println("\nYou hit a ship!");
-            printBoard();
+            if (fstBoard[aPointX][aPointY].getShip().isKilled()) {
+                if (!isLastShip()) {
+                    System.out.println("\nYou sank a ship! Specify a new target:");
+                    printBoard();
+                } else {
+                    System.out.println("\nYou sank the last ship. You won. Congratulations!");
+                }
+            } else {
+                System.out.println("\nYou hit a ship! Try again:");
+                printBoard();
+            }
+
         } else {
             fstBoard[aPointX][aPointY].setData(Symbol.MISS.data);
             printFogBoard();
-            System.out.println("\nYou missed!");
+            System.out.println("\nYou missed. Try again:");
             printBoard();
         }
     }

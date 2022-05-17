@@ -3,21 +3,20 @@ package battleship.model;
 public class Ship {
     private final String _NAME;
     private final int _SIZE;
-    private boolean killed;
+    private int hits;
+
 
     public boolean isKilled() {
-        return killed;
+        return hits == 0;
     }
-
-    public void setKilled() {
-        this.killed = true;
+    public void takeHit() {
+        hits--;
     }
-//int[][] coordinate;
 
     public Ship(String _NAME, int _SIZE) {
         this._NAME = _NAME;
         this._SIZE = _SIZE;
-        killed = false;
+        hits = _SIZE;
         //this.coordinate = coordinate;
     }
 
