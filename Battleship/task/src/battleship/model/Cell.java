@@ -1,8 +1,10 @@
 package battleship.model;
 
 public class Cell {
-    char data;
-    boolean canChange;
+    char dataOnePlayer;
+    char dataTwoPlayer;
+    boolean canChangeOnePlayer;
+    boolean canChangeTwoPlayer;
 
     public void setShip(Ship ship) {
         this.ship = ship;
@@ -14,32 +16,59 @@ public class Cell {
 
     Ship ship;
 
-    public void setData(char data) {
-        this.data = data;
+    public void setData(char data, int player) {
+        switch (player) {
+            case 1:
+                this.dataOnePlayer = data;
+                break;
+            case 2:
+                this.dataTwoPlayer = data;
+        }
     }
 
-    public void setCanChange(boolean canChange) {
-        this.canChange = canChange;
+    public void setCanChange(boolean canChange, int player) {
+        switch (player) {
+            case 1:
+                this.canChangeOnePlayer = canChange;
+                break;
+            case 2:
+                this.canChangeTwoPlayer = canChange;
+        }
     }
     public Cell() {
-        this.data = Symbol.FOG.data;
-        canChange = true;
+        this.dataOnePlayer = Symbol.FOG.data;
+        this.dataTwoPlayer = Symbol.FOG.data;
+        canChangeOnePlayer = true;
+        canChangeTwoPlayer = true;
     }
 
-    public Cell(char data) {
-        this.data = data;
-        canChange = true;
+    public Cell(char data, int player) {
+        this.dataOnePlayer = Symbol.FOG.data;
+        this.dataTwoPlayer = Symbol.FOG.data;
+
+        switch (player) {
+            case 1:
+                this.dataOnePlayer = data;
+                break;
+            case 2:
+                this.dataTwoPlayer = data;
+        }
+        setCanChange(true, player);
     }
 
-    public char getData() {
-        return data;
+    public char getData(int player) {
+        if (player == 1) {return dataOnePlayer;}
+        return dataTwoPlayer;
     }
 
-    public boolean isCanChange() {
-        return canChange;
+    public boolean isCanChange(int player) {
+       if (player == 1) {
+           return canChangeOnePlayer;
+       }
+       return canChangeTwoPlayer;
     }
 
-    public boolean isBoard() {
-        return getData() == Symbol.CELL.data || getData() == Symbol.HIT.data;
+    public boolean isBoard(int player) {
+        return getData(player) == Symbol.CELL.data || getData(player) == Symbol.HIT.data;
     }
 }
