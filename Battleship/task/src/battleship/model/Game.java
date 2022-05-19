@@ -1,15 +1,15 @@
 package battleship.model;
 
 public class Game {
-    private final int _FULL_SIZE = 10;
-    private final int _SHIPS_CNT = 5;
+    private final int _FULL_SIZE = 10; //FULL_SIZE
+    private final int _SHIPS_CNT = 5; //strict all or nothing so SHIPS_COUNT
 
     private final Cell[][] cells;
     private final Ship[] ships;
 
-    private int healthOnePlayer;
-    private int healthTwoPlayer;
-    private int currentShipIndex;
+    private int healthOnePlayer; // this field should be a class Player
+    private int healthTwoPlayer; // it's not a Game class property
+    private int currentShipIndex; // currently, can't catch your idea. name seems strange
 
     public int getCurrentPlayer() {
         return currentPlayer;
@@ -19,10 +19,10 @@ public class Game {
     GameStatus status;
 
     public Game() {
-        healthOnePlayer = 0;
-        healthTwoPlayer = 0;
-
-        this.cells = new Cell[_FULL_SIZE][];
+        healthOnePlayer = 0; //excessive line for init field.
+        healthTwoPlayer = 0; //excessive line for init field.
+        // you can initialize your fields right away after declaration
+        this.cells = new Cell[_FULL_SIZE][]; // Cell[][] cells = new Cell[SIZE][SIZE]
         for (int i = 0; i < _FULL_SIZE; i++) {
             cells[i] = new Cell[_FULL_SIZE];
             for (int j = 0; j < _FULL_SIZE; j++) {
@@ -52,7 +52,7 @@ public class Game {
         _print(true, getOpponent());
         System.out.println("---------------------");
     }
-    private void _print(boolean withFog, int player) {
+    private void _print(boolean withFog, int player) { //print. it's Java
         System.out.println("  1 2 3 4 5 6 7 8 9 10");
         for (int i = 0; i < _FULL_SIZE; i++) {
             System.out.print((char) ('A' + i) + " ");
@@ -64,14 +64,14 @@ public class Game {
         }
     }
 
-    private void initShips() {
+    private void initShips() {//enum for ships seems better.
         ships[0] = new Ship("Aircraft Carrier", 5);
         ships[1] = new Ship("Battleship", 4);
         ships[2] = new Ship("Submarine", 3);
         ships[3] = new Ship("Cruiser", 3);
         ships[4] = new Ship("Destroyer", 2);
     }
-    private void goNextShip(){
+    private void goNextShip(){//naming - just nextShip
         currentShipIndex++;
     }
 
@@ -154,6 +154,7 @@ public class Game {
 
     private void markUsedCells(int x, int y) {
         cells[x][y].setCanChange(false, getCurrentPlayer());
+        //imagine that the Cell class is smart. and you can just call .block() method and the Cell will change its state by itself
         if (x > 0) {
             cells[x - 1][y].setCanChange(false, getCurrentPlayer());
             if (y > 0) {
@@ -176,6 +177,29 @@ public class Game {
         }
     }
     private void fillBoard(int aX, int aY, int bX, int bY) {
+        // how mark used cells ?
+        /*
+        aX = aX == 0 ? aX : --aX;
+        aY = aY == 0 ? aY : --aY;
+        bX = bX == _FULL_SIZE - 1 ? bX : ++bX;
+        bY = bY == _FULL_SIZE - 1 ? bY : ++bY;
+
+        for( ;aX <= bX; aX++){
+            for (; aY <= bY; aY++) {
+                cells[aX][aY].block()
+            }
+        }
+        1 2 3 4 5 // if your ship has coordinates 3 2 : 3 5
+        1 *       // so blocked(*) cells are all in rectangle from 2 1 to 4 6
+        2   s     // just loop through mounted mini rectangle and block all cells
+        3   s
+        4   s
+        5   s
+        6     *
+
+         */
+
+
         int size = ships[currentShipIndex].getSize();
         while (size > 0) {
             size--;
@@ -208,10 +232,13 @@ public class Game {
     }
     public void processCommand(String command) {
         switch (status) {
-            case WAITING_END:
+            case WAITING_END: //one method gor each case action
+                                // better to create a class for each action and remove switch
                 break;
             case WAITING_INPUT_ONE_PLAYER:
-                if (currentShipIndex < _SHIPS_CNT) {
+                if (currentShipIndex < _SHIPS_CNT) { //avoid so deep expressions
+                                                    // you are missing space for coding =)
+                                                    // also it's just had to read
                     try {
                         saveCoordinate(command);
                         goNextShip();
@@ -292,6 +319,9 @@ public class Game {
                 aPointY < 0 || aPointY >= _FULL_SIZE) {
             throw new IllegalArgumentException("Error! You entered the wrong coordinates! Try again:");
         }
+        //shift responsibility from here to a Cell class. just call cells[x][y].shoot();
+        //a Cell should be smart to understand is it kill or hit or miss.
+        // along with sending properly message
         if (cells[aPointX][aPointY].isBoard(getOpponent())) {
             takeHit(aPointX, aPointY, getOpponent());
             cells[aPointX][aPointY].setData(Symbol.HIT.data, getOpponent());
