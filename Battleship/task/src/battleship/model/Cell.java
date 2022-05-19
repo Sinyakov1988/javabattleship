@@ -40,20 +40,6 @@ public class Cell {
         canChangeTwoPlayer = true;
     }
 
-    public Cell(char data, int player) {
-        this.dataOnePlayer = Symbol.FOG.data;
-        this.dataTwoPlayer = Symbol.FOG.data;
-
-        switch (player) {
-            case 1:
-                this.dataOnePlayer = data;
-                break;
-            case 2:
-                this.dataTwoPlayer = data;
-        }
-        setCanChange(true, player);
-    }
-
     public char getData(int player) {
         if (player == 1) {return dataOnePlayer;}
         return dataTwoPlayer;
