@@ -45,14 +45,14 @@ public class Game {
         }
         return 1;
     }
-    public void printBoard() {
+    private void printBoard() {
         _print(false, getCurrentPlayer());
     }
-    public void printOpponentFogBoard() {
+    private void printOpponentFogBoard() {
         _print(true, getOpponent());
         System.out.println("---------------------");
     }
-    public void _print(boolean withFog, int player) {
+    private void _print(boolean withFog, int player) {
         System.out.println("  1 2 3 4 5 6 7 8 9 10");
         for (int i = 0; i < _FULL_SIZE; i++) {
             System.out.print((char) ('A' + i) + " ");
@@ -64,35 +64,35 @@ public class Game {
         }
     }
 
-    void initShips() {
+    private void initShips() {
         ships[0] = new Ship("Aircraft Carrier", 5);
         ships[1] = new Ship("Battleship", 4);
         ships[2] = new Ship("Submarine", 3);
         ships[3] = new Ship("Cruiser", 3);
         ships[4] = new Ship("Destroyer", 2);
     }
-    void goNextShip(){
+    private void goNextShip(){
         currentShipIndex++;
     }
 
     public GameStatus getStatus() {
         return status;
     }
-    void sayEnterCoordinate(){
+    private void sayEnterCoordinate(){
         System.out.println("\nEnter the coordinates of the " + ships[currentShipIndex].getName()
                 + " (" + ships[currentShipIndex].getSize() + " cells)");
     }
-    void sayPlaceYourShips(int player){
+    private void sayPlaceYourShips(int player){
         System.out.println("\nPlayer " + player + ", place your ships on the game field\n");
     }
-    void sayTakeShot(){
+    private void sayTakeShot(){
         System.out.println("\nPlayer " + getCurrentPlayer() + ", it's your turn:\n");
     }
-    void sayPressEnter() {
+    private void sayPressEnter() {
         System.out.println("Press Enter and pass the move to another player\n" +
                 "...");
     }
-    void saveCoordinate(String input) {
+    private void saveCoordinate(String input) {
      String[] words = input.split(" ");
      int aPointX = words[0].charAt(0) - 'A';
      int aPointY = Integer.parseInt(words[0].substring(1)) - 1;
@@ -102,7 +102,7 @@ public class Game {
         checkCoordinate(aPointX, aPointY, bPointX, bPointY);
         fillBoard(aPointX, aPointY, bPointX, bPointY);
     }
-    void checkCoordinate(int aX, int aY, int bX, int bY) {
+    private void checkCoordinate(int aX, int aY, int bX, int bY) {
         if (aX < 0 || aX >= _FULL_SIZE ||
                 aY < 0 || aY >= _FULL_SIZE ||
                 bX < 0 || bX >= _FULL_SIZE ||
@@ -152,7 +152,7 @@ public class Game {
         }
     }
 
-    void markUsedCells(int x, int y) {
+    private void markUsedCells(int x, int y) {
         cells[x][y].setCanChange(false, getCurrentPlayer());
         if (x > 0) {
             cells[x - 1][y].setCanChange(false, getCurrentPlayer());
@@ -175,7 +175,7 @@ public class Game {
             }
         }
     }
-    void fillBoard(int aX, int aY, int bX, int bY) {
+    private void fillBoard(int aX, int aY, int bX, int bY) {
         int size = ships[currentShipIndex].getSize();
         while (size > 0) {
             size--;
@@ -198,7 +198,7 @@ public class Game {
             }
         }
     }
-    void swapPlayer() {
+    private void swapPlayer() {
         if (currentPlayer == 1) {
             currentPlayer = 2;
         }
