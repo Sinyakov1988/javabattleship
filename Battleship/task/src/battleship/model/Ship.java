@@ -23,12 +23,6 @@ public class Ship {
         hitsOnePlayer = _SIZE;
         hitsTwoPlayer = _SIZE;
     }
-
-    public Ship() {
-        this._NAME = "";
-        this._SIZE = 0;
-    }
-
     public String getName() {
         return _NAME;
     }

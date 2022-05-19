@@ -5,7 +5,7 @@ public class Cell {
     char dataTwoPlayer;
     boolean canChangeOnePlayer;
     boolean canChangeTwoPlayer;
-
+    private Ship ship;
     public void setShip(Ship ship) {
         this.ship = ship;
     }
@@ -13,8 +13,6 @@ public class Cell {
     public Ship getShip() {
         return ship;
     }
-
-    Ship ship;
 
     public void setData(char data, int player) {
         switch (player) {
