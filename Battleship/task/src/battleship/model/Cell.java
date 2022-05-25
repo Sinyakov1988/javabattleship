@@ -1,10 +1,10 @@
 package battleship.model;
 
-public class Cell {
+public class Cell { //architecture error. Cell is using by user. so it's impossible to know who calls it
     char dataOnePlayer;
-    char dataTwoPlayer;
+    char dataTwoPlayer;//remove
     boolean canChangeOnePlayer;
-    boolean canChangeTwoPlayer;
+    boolean canChangeTwoPlayer;//remove
     private Ship ship;
     public void setShip(Ship ship) {
         this.ship = ship;
@@ -15,7 +15,8 @@ public class Cell {
     }
 
     public void setData(char data, int player) {
-        switch (player) {
+        switch (player) {//you used switch in setter because of bad architecture.
+                        //I remind you that a Cell is using by user. and it shouldn't know about whom exactly
             case 1:
                 this.dataOnePlayer = data;
                 break;
@@ -24,7 +25,7 @@ public class Cell {
         }
     }
 
-    public void setCanChange(boolean canChange, int player) {
+    public void setCanChange(boolean canChange, int player) {//the same as above
         switch (player) {
             case 1:
                 this.canChangeOnePlayer = canChange;
@@ -33,18 +34,18 @@ public class Cell {
                 this.canChangeTwoPlayer = canChange;
         }
     }
-    public Cell() {
-        this.dataOnePlayer = Symbol.FOG.data;
-        this.dataTwoPlayer = Symbol.FOG.data;
-        canChangeOnePlayer = true;
-        canChangeTwoPlayer = true;
+    public Cell() {//constructor must be between fields and methods
+        this.dataOnePlayer = Symbol.FOG.data; //overhead initialization
+        this.dataTwoPlayer = Symbol.FOG.data; // you may remove constructor and init field on the place
+        canChangeOnePlayer = true; //overhead initialization
+        canChangeTwoPlayer = true; //overhead initialization
     }
 
     public char getData(int player) {
-        if (player == 1) {return dataOnePlayer;}
+        if (player == 1) {return dataOnePlayer;} //formatting as below
         return dataTwoPlayer;
     }
-
+    // for both methods more short expression -> return player == 1 ? one : two
     public boolean isCanChange(int player) {
        if (player == 1) {
            return canChangeOnePlayer;
@@ -52,7 +53,8 @@ public class Cell {
        return canChangeTwoPlayer;
     }
 
-    public boolean isBoard(int player) {
-        return getData(player) == Symbol.CELL.data || getData(player) == Symbol.HIT.data;
+    public boolean isBoard(int player) { //what does it mean isBoard? I Don't even have a clue
+        //Cell is a part of a board.
+        return getData(player) == Symbol.CELL.data || getData(player) == Symbol.HIT.data; // would be better just compare enums instead of their fields
     }
 }
